@@ -3,5 +3,5 @@
 
 # Distribution files
 /dist/
-/lib/**/*
+/lib/
 /__tests__/runner/*
