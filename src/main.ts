@@ -18,12 +18,16 @@ async function run(): Promise<void> {
       );
     }
 
+    core.debug(`Chose release ${ release.tag_name }`);
+
     const asset = foreman.chooseAsset(release);
     if (asset == null) {
       throw new Error(
         `Could not find asset for version ${release.tag_name} on platform ${process.platform}`
       );
     }
+
+    core.debug(`Chose release asset ${ release.browser_download_url }`);
 
     const zipPath = await tc.downloadTool(asset.browser_download_url);
     const extractedPath = await tc.extractZip(zipPath, ".foreman-install");
