@@ -11,14 +11,14 @@ interface GitHubAsset {
 
 interface GitHubRelease {
   tag_name: string;
-  assets: Array<GitHubAsset>;
+  assets: GitHubAsset[];
 }
 
-async function getReleases(): Promise<Array<GitHubRelease>> {
+async function getReleases(): Promise<GitHubRelease[]> {
   const response = await axios.get(RELEASE_URL);
 
   if (response.status === 200) {
-    const releases = response.data as Array<GitHubRelease>;
+    const releases = response.data as GitHubRelease[];
     releases.sort((a, b) => -semver.compare(a.tag_name, b.tag_name));
 
     return releases;
@@ -29,7 +29,7 @@ async function getReleases(): Promise<Array<GitHubRelease>> {
 
 function chooseRelease(
   versionReq: string,
-  releases: Array<GitHubRelease>
+  releases: GitHubRelease[]
 ): GitHubRelease | null {
   for (const release of releases) {
     if (semver.satisfies(release.tag_name, versionReq)) {
@@ -61,7 +61,7 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
   return null;
 }
 
-function addToPath() {
+function addToPath(): void {
   core.addPath("~/.foreman/bin");
 }
 
