@@ -1,5 +1,6 @@
 name: "build-test"
-on: # rebuild any PRs and main branch changes
+
+on:
   pull_request:
   push:
     branches:
@@ -7,21 +8,13 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 
 jobs:
-  build: # make sure build/ci work properly
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - run: |
       npm install
       npm run all
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - run: |
-      npm install
-      npm run pack
     - uses: ./
       with:
         version: "^0.5.0"
