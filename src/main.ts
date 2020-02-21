@@ -37,6 +37,8 @@ async function run(): Promise<void> {
     if (process.platform === "darwin" || process.platform === "linux") {
       await exec("chmod +x .foreman-install/foreman");
     }
+
+    foreman.addBinDirToPath();
   } catch (error) {
     core.setFailed(error.message);
   }
