@@ -5419,6 +5419,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const tc = __importStar(__webpack_require__(533));
 const github = __importStar(__webpack_require__(469));
+const exec_1 = __webpack_require__(986);
 const foreman_1 = __importDefault(__webpack_require__(494));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -5440,6 +5441,9 @@ function run() {
             const zipPath = yield tc.downloadTool(asset.browser_download_url);
             const extractedPath = yield tc.extractZip(zipPath, ".foreman-install");
             core.addPath(extractedPath);
+            if (process.platform === "darwin" || process.platform === "linux") {
+                yield exec_1.exec("chmod +x .foreman-install/foreman");
+            }
         }
         catch (error) {
             core.setFailed(error.message);
