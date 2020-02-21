@@ -1,10 +1,9 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Setup Foreman'
+description: 'Install Foreman, a toolchain manager for Roblox projects'
+author: 'The Rojo Developers'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  version:
+    description: 'SemVer version of Foreman to install'
 runs:
   using: 'node12'
   main: 'dist/index.js'

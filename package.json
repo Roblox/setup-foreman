@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "setup-foreman",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "GitHub Action to install Foreman, a toolchain manager for Roblox",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -13,23 +13,18 @@
     "test": "jest",
     "all": "npm run build && npm run format && npm run lint && npm run pack && npm test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
-  },
-  "keywords": [
-    "actions",
-    "node",
-    "setup"
-  ],
-  "author": "YourNameOrOrganization",
+  "author": "Lucien Greathouse <me@lpghatguy.com>",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.0"
+    "@actions/core": "^1.2.0",
+    "@actions/tool-cache": "^1.3.1",
+    "axios": "^0.19.2",
+    "semver": "^7.1.3"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.7.12",
+    "@types/semver": "^7.1.0",
     "@typescript-eslint/parser": "^2.8.0",
     "@zeit/ncc": "^0.20.5",
     "eslint": "^5.16.0",
