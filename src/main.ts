@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 import * as github from "@actions/github";
+import {exec} from "@actions/exec";
 import foreman from "./foreman";
 
 async function run(): Promise<void> {
@@ -32,6 +33,10 @@ async function run(): Promise<void> {
     const zipPath = await tc.downloadTool(asset.browser_download_url);
     const extractedPath = await tc.extractZip(zipPath, ".foreman-install");
     core.addPath(extractedPath);
+
+    if (process.platform === "darwin" || process.platform === "linux") {
+      await exec("chmod +x .foreman-install/foreman");
+    }
   } catch (error) {
     core.setFailed(error.message);
   }
