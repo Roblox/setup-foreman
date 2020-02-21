@@ -1,8 +1,6 @@
 import core from "@actions/core";
-import github, { GitHub } from "@actions/github";
+import {GitHub} from "@actions/github";
 import semver from "semver";
-
-const RELEASE_URL = "https://api.github.com/repos/rojo-rbx/foreman/releases";
 
 interface GitHubAsset {
   name: string;
@@ -17,7 +15,7 @@ interface GitHubRelease {
 async function getReleases(octokit: GitHub): Promise<GitHubRelease[]> {
   const response = await octokit.repos.listReleases({
     owner: "rojo-rbx",
-    repo: "foreman",
+    repo: "foreman"
   });
 
   const releases = response.data as GitHubRelease[];
