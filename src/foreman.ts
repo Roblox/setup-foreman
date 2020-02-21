@@ -4,7 +4,7 @@ import semver from "semver";
 
 interface GitHubAsset {
   name: string;
-  url: string;
+  browser_download_url: string;
 }
 
 interface GitHubRelease {

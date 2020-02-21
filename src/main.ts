@@ -25,7 +25,7 @@ async function run(): Promise<void> {
       );
     }
 
-    const zipPath = await tc.downloadTool(asset.url);
+    const zipPath = await tc.downloadTool(asset.browser_download_url);
     const extractedPath = await tc.extractZip(zipPath, ".foreman-install");
     core.addPath(extractedPath);
   } catch (error) {
