@@ -18,7 +18,7 @@ async function run(): Promise<void> {
       );
     }
 
-    core.debug(`Chose release ${ release.tag_name }`);
+    core.debug(`Chose release ${release.tag_name}`);
 
     const asset = foreman.chooseAsset(release);
     if (asset == null) {
@@ -27,7 +27,7 @@ async function run(): Promise<void> {
       );
     }
 
-    core.debug(`Chose release asset ${ release.browser_download_url }`);
+    core.debug(`Chose release asset ${asset.browser_download_url}`);
 
     const zipPath = await tc.downloadTool(asset.browser_download_url);
     const extractedPath = await tc.extractZip(zipPath, ".foreman-install");
