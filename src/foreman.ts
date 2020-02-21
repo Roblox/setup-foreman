@@ -58,7 +58,7 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
   return null;
 }
 
-function addToPath(): void {
+function addBinDirToPath(): void {
   core.addPath("~/.foreman/bin");
 }
 
@@ -66,5 +66,5 @@ export default {
   getReleases,
   chooseRelease,
   chooseAsset,
-  addToPath
+  addBinDirToPath
 };
