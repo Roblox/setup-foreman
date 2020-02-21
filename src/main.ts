@@ -6,8 +6,9 @@ import foreman from "./foreman";
 async function run(): Promise<void> {
   try {
     const versionReq: string = core.getInput("version");
+    const githubToken: string = core.getInput("token");
 
-    const octokit = new github.GitHub("no token");
+    const octokit = new github.GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
 
     const release = foreman.chooseRelease(versionReq, releases);
