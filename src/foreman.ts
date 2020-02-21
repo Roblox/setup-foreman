@@ -1,12 +1,10 @@
-import core from "@actions/core";
-import axios from "axios";
+import * as core from "@actions/core";
+import {GitHub} from "@actions/github";
 import semver from "semver";
-
-const RELEASE_URL = "https://api.github.com/repos/rojo-rbx/foreman/releases";
 
 interface GitHubAsset {
   name: string;
-  url: string;
+  browser_download_url: string;
 }
 
 interface GitHubRelease {
@@ -14,17 +12,16 @@ interface GitHubRelease {
   assets: GitHubAsset[];
 }
 
-async function getReleases(): Promise<GitHubRelease[]> {
-  const response = await axios.get(RELEASE_URL);
+async function getReleases(octokit: GitHub): Promise<GitHubRelease[]> {
+  const response = await octokit.repos.listReleases({
+    owner: "rojo-rbx",
+    repo: "foreman"
+  });
 
-  if (response.status === 200) {
-    const releases = response.data as GitHubRelease[];
-    releases.sort((a, b) => -semver.compare(a.tag_name, b.tag_name));
+  const releases = response.data as GitHubRelease[];
+  releases.sort((a, b) => -semver.compare(a.tag_name, b.tag_name));
 
-    return releases;
-  } else {
-    throw new Error("Could not fetch Foreman releases");
-  }
+  return releases;
 }
 
 function chooseRelease(

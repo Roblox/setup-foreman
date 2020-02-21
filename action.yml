@@ -4,6 +4,8 @@ author: 'The Rojo Developers'
 inputs:
   version:
     description: 'SemVer version of Foreman to install'
+  token:
+    description: 'GitHub token from secrets.GITHUB_TOKEN'
 runs:
   using: 'node12'
   main: 'dist/index.js'
