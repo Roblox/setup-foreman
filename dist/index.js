@@ -5444,6 +5444,7 @@ function run() {
             if (process.platform === "darwin" || process.platform === "linux") {
                 yield exec_1.exec("chmod +x .foreman-install/foreman");
             }
+            foreman_1.default.addBinDirToPath();
         }
         catch (error) {
             core.setFailed(error.message);
@@ -9505,14 +9506,14 @@ function chooseAsset(release) {
     }
     return null;
 }
-function addToPath() {
+function addBinDirToPath() {
     core.addPath("~/.foreman/bin");
 }
 exports.default = {
     getReleases,
     chooseRelease,
     chooseAsset,
-    addToPath
+    addBinDirToPath
 };
 
 
