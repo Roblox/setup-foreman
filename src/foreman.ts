@@ -27,7 +27,10 @@ async function getReleases(): Promise<Array<GitHubRelease>> {
   }
 }
 
-function chooseRelease(versionReq: string, releases: Array<GitHubRelease>): GitHubRelease | null {
+function chooseRelease(
+  versionReq: string,
+  releases: Array<GitHubRelease>
+): GitHubRelease | null {
   for (const release of releases) {
     if (semver.satisfies(release.tag_name, versionReq)) {
       return release;
@@ -46,7 +49,7 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
   } else if (process.platform === "linux") {
     platformName = "linux";
   } else {
-    throw new Error(`Unsupported platform "${ process.platform }"`);
+    throw new Error(`Unsupported platform "${process.platform}"`);
   }
 
   for (const asset of release.assets) {
@@ -66,5 +69,5 @@ export default {
   getReleases,
   chooseRelease,
   chooseAsset,
-  addToPath,
+  addToPath
 };

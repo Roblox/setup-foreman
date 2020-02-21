@@ -10,12 +10,16 @@ async function run(): Promise<void> {
 
     const release = foreman.chooseRelease(versionReq, releases);
     if (release == null) {
-      throw new Error(`Could not find Foreman release for version ${ versionReq }`);
+      throw new Error(
+        `Could not find Foreman release for version ${versionReq}`
+      );
     }
 
     const asset = foreman.chooseAsset(release);
     if (asset == null) {
-      throw new Error(`Could not find asset for version ${ release.tag_name } on platform ${ process.platform }`);
+      throw new Error(
+        `Could not find asset for version ${release.tag_name} on platform ${process.platform}`
+      );
     }
 
     const zipPath = await tc.downloadTool(asset.url);
