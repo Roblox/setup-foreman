@@ -1,4 +1,4 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 import {GitHub} from "@actions/github";
 import semver from "semver";
 

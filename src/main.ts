@@ -1,6 +1,6 @@
-import core from "@actions/core";
-import tc from "@actions/tool-cache";
-import github from "@actions/github";
+import * as core from "@actions/core";
+import * as tc from "@actions/tool-cache";
+import * as github from "@actions/github";
 import foreman from "./foreman";
 
 async function run(): Promise<void> {
