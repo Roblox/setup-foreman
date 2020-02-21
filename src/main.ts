@@ -1,12 +1,14 @@
-import * as core from "@actions/core";
-import * as tc from "@actions/tool-cache";
+import core from "@actions/core";
+import tc from "@actions/tool-cache";
+import github from "@actions/github";
 import foreman from "./foreman";
 
 async function run(): Promise<void> {
   try {
     const versionReq: string = core.getInput("version");
 
-    const releases = await foreman.getReleases();
+    const octokit = new github.GitHub("no token");
+    const releases = await foreman.getReleases(octokit);
 
     const release = foreman.chooseRelease(versionReq, releases);
     if (release == null) {
