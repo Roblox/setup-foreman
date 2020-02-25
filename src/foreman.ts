@@ -77,10 +77,15 @@ function addBinDirToPath(): void {
   }
 }
 
+async function installTools(): Promise<void> {
+  await exec("foreman install");
+}
+
 export default {
   getReleases,
   chooseRelease,
   chooseAsset,
   authenticate,
-  addBinDirToPath
+  addBinDirToPath,
+  installTools
 };

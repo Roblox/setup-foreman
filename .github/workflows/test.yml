@@ -24,5 +24,4 @@ jobs:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
     - run: foreman --version
-    - run: foreman install
     - run: rojo --version
