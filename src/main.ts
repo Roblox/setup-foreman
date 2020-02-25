@@ -38,6 +38,7 @@ async function run(): Promise<void> {
       await exec("chmod +x .foreman-install/foreman");
     }
 
+    await foreman.authenticate(githubToken);
     foreman.addBinDirToPath();
   } catch (error) {
     core.setFailed(error.message);

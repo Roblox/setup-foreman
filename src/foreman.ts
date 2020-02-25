@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import {exec} from "@actions/exec";
 import {GitHub} from "@actions/github";
 import semver from "semver";
 
@@ -58,6 +59,10 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
   return null;
 }
 
+async function authenticate(token: string): Promise<void> {
+  await exec("foreman", ["github-auth", token]);
+}
+
 function addBinDirToPath(): void {
   core.addPath("~/.foreman/bin");
 }
@@ -66,5 +71,6 @@ export default {
   getReleases,
   chooseRelease,
   chooseAsset,
+  authenticate,
   addBinDirToPath
 };
