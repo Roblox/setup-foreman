@@ -68,7 +68,13 @@ async function authenticate(token: string): Promise<void> {
 }
 
 function addBinDirToPath(): void {
-  core.addPath("~/.foreman/bin");
+  if (process.platform === "win32") {
+    core.addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
+  } else if (process.platform === "darwin" || process.platform === "linux") {
+    core.addPath("~/.foreman/bin");
+  } else {
+    throw new Error(`Unsupported platform "${process.platform}"`);
+  }
 }
 
 export default {
