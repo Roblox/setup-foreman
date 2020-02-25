@@ -1,0 +1,4 @@
+# This file is used as a way to make sure that setup-foreman is functioning.
+
+[tools]
+rojo = { source = "rojo-rbx/rojo", version = "0.6.0-alpha.1" }

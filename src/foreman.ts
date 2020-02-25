@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import {exec} from "@actions/exec";
 import {GitHub} from "@actions/github";
 import semver from "semver";
 
@@ -38,19 +39,23 @@ function chooseRelease(
 }
 
 function chooseAsset(release: GitHubRelease): GitHubAsset | null {
-  let platformName;
+  let platformMatcher: (name: string) => boolean;
+
   if (process.platform === "win32") {
-    platformName = "windows";
+    platformMatcher = name =>
+      name.includes("windows") ||
+      name.includes("win64") ||
+      name.includes("win32");
   } else if (process.platform === "darwin") {
-    platformName = "macos";
+    platformMatcher = name => name.includes("macos");
   } else if (process.platform === "linux") {
-    platformName = "linux";
+    platformMatcher = name => name.includes("linux");
   } else {
     throw new Error(`Unsupported platform "${process.platform}"`);
   }
 
   for (const asset of release.assets) {
-    if (asset.name.includes(platformName)) {
+    if (platformMatcher(asset.name)) {
       return asset;
     }
   }
@@ -58,13 +63,24 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
   return null;
 }
 
+async function authenticate(token: string): Promise<void> {
+  await exec("foreman", ["github-auth", token]);
+}
+
 function addBinDirToPath(): void {
-  core.addPath("~/.foreman/bin");
+  if (process.platform === "win32") {
+    core.addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
+  } else if (process.platform === "darwin" || process.platform === "linux") {
+    core.addPath("~/.foreman/bin");
+  } else {
+    throw new Error(`Unsupported platform "${process.platform}"`);
+  }
 }
 
 export default {
   getReleases,
   chooseRelease,
   chooseAsset,
+  authenticate,
   addBinDirToPath
 };
