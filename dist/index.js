@@ -5444,6 +5444,7 @@ function run() {
             if (process.platform === "darwin" || process.platform === "linux") {
                 yield exec_1.exec("chmod +x .foreman-install/foreman");
             }
+            yield foreman_1.default.authenticate(githubToken);
             foreman_1.default.addBinDirToPath();
         }
         catch (error) {
@@ -9465,6 +9466,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
+const exec_1 = __webpack_require__(986);
 const semver_1 = __importDefault(__webpack_require__(876));
 function getReleases(octokit) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -9486,33 +9488,49 @@ function chooseRelease(versionReq, releases) {
     return null;
 }
 function chooseAsset(release) {
-    let platformName;
+    let platformMatcher;
     if (process.platform === "win32") {
-        platformName = "windows";
+        platformMatcher = name => name.includes("windows") ||
+            name.includes("win64") ||
+            name.includes("win32");
     }
     else if (process.platform === "darwin") {
-        platformName = "macos";
+        platformMatcher = name => name.includes("macos");
     }
     else if (process.platform === "linux") {
-        platformName = "linux";
+        platformMatcher = name => name.includes("linux");
     }
     else {
         throw new Error(`Unsupported platform "${process.platform}"`);
     }
     for (const asset of release.assets) {
-        if (asset.name.includes(platformName)) {
+        if (platformMatcher(asset.name)) {
             return asset;
         }
     }
     return null;
 }
+function authenticate(token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield exec_1.exec("foreman", ["github-auth", token]);
+    });
+}
 function addBinDirToPath() {
-    core.addPath("~/.foreman/bin");
+    if (process.platform === "win32") {
+        core.addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
+    }
+    else if (process.platform === "darwin" || process.platform === "linux") {
+        core.addPath("~/.foreman/bin");
+    }
+    else {
+        throw new Error(`Unsupported platform "${process.platform}"`);
+    }
 }
 exports.default = {
     getReleases,
     chooseRelease,
     chooseAsset,
+    authenticate,
     addBinDirToPath
 };
 
