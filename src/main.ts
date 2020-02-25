@@ -40,6 +40,7 @@ async function run(): Promise<void> {
 
     await foreman.authenticate(githubToken);
     foreman.addBinDirToPath();
+    await foreman.installTools();
   } catch (error) {
     core.setFailed(error.message);
   }
