@@ -12,6 +12,8 @@ async function run(): Promise<void> {
     const octokit = new github.GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
 
+    core.debug("Choosing release from GitHub API");
+
     const release = foreman.chooseRelease(versionReq, releases);
     if (release == null) {
       throw new Error(
