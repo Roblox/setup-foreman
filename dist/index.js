@@ -3243,7 +3243,7 @@ function addBinDirToPath() {
         core.addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
     }
     else if (process.platform === "darwin" || process.platform === "linux") {
-        core.addPath("~/.foreman/bin");
+        core.addPath(`${process.env.HOME}/.foreman/bin`);
     }
     else {
         throw new Error(`Unsupported platform "${process.platform}"`);
