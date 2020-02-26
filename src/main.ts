@@ -41,8 +41,8 @@ async function run(): Promise<void> {
     }
 
     await foreman.authenticate(githubToken);
-    foreman.addBinDirToPath();
     await foreman.installTools();
+    foreman.addBinDirToPath();
   } catch (error) {
     core.setFailed(error.message);
   }
