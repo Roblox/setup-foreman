@@ -15,7 +15,7 @@ interface GitHubRelease {
 
 async function getReleases(octokit: GitHub): Promise<GitHubRelease[]> {
   const response = await octokit.repos.listReleases({
-    owner: "rojo-rbx",
+    owner: "Roblox",
     repo: "foreman"
   });
 
