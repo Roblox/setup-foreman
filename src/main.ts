@@ -13,10 +13,6 @@ async function run(): Promise<void> {
     const octokit = new github.GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
 
-    if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
-      process.chdir(workingDir);
-    }
-
     core.debug("Choosing release from GitHub API");
 
     const release = foreman.chooseRelease(versionReq, releases);
@@ -46,8 +42,12 @@ async function run(): Promise<void> {
     }
 
     await foreman.authenticate(githubToken);
-    await foreman.installTools();
     foreman.addBinDirToPath();
+
+    if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
+      process.chdir(workingDir);
+    }
+    await foreman.installTools();
   } catch (error) {
     core.setFailed(error.message);
   }
