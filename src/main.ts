@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 import * as github from "@actions/github";
+import {resolve} from 'path';
 import {exec} from "@actions/exec";
 import foreman from "./foreman";
 
@@ -8,6 +9,7 @@ async function run(): Promise<void> {
   try {
     const versionReq: string = core.getInput("version");
     const githubToken: string = core.getInput("token");
+    const workingDir: string = core.getInput("working-directory");
 
     const octokit = new github.GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
@@ -34,15 +36,19 @@ async function run(): Promise<void> {
 
     const zipPath = await tc.downloadTool(asset.browser_download_url);
     const extractedPath = await tc.extractZip(zipPath, ".foreman-install");
-    core.addPath(extractedPath);
+    core.addPath(resolve(extractedPath));
 
     if (process.platform === "darwin" || process.platform === "linux") {
       await exec("chmod +x .foreman-install/foreman");
     }
 
     await foreman.authenticate(githubToken);
-    await foreman.installTools();
     foreman.addBinDirToPath();
+
+    if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
+      process.chdir(workingDir);
+    }
+    await foreman.installTools();
   } catch (error) {
     core.setFailed(error.message);
   }

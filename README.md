@@ -22,5 +22,10 @@ A SemVer version range of Foreman to install.
 
 If not specified, the latest stable release will be installed.
 
+#### `working-directory` (optional)
+A working directory in which `foreman install` will be executed.
+
+If not specified the root job folder will be used
+
 ## License
 setup-foreman is available under the MIT license. See [LICENSE.txt](LICENSE.txt) or <https://opensource.org/licenses/MIT> for details.

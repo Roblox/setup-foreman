@@ -3,8 +3,13 @@ description: 'Install Foreman, a toolchain manager for Roblox projects'
 author: 'The Rojo Developers'
 inputs:
   version:
+    required: false
     description: 'SemVer version of Foreman to install'
+  working-directory:
+    required: false
+    description: 'Working directory to run `foreman install` in'
   token:
+    required: true
     description: 'GitHub token from secrets.GITHUB_TOKEN'
 runs:
   using: 'node12'
