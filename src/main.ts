@@ -8,9 +8,14 @@ async function run(): Promise<void> {
   try {
     const versionReq: string = core.getInput("version");
     const githubToken: string = core.getInput("token");
+    const workingDir: string = core.getInput("working-directory");
 
     const octokit = new github.GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
+
+    if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
+      process.chdir(workingDir);
+    }
 
     core.debug("Choosing release from GitHub API");
 
