@@ -19,9 +19,18 @@ jobs:
     - run: npm install
     - run: npm run all
     - run: npm run pack
+
     - uses: ./
       with:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
     - run: foreman --version
     - run: rojo --version
+
+    - name: Install with working-directory
+      uses: ./
+      with:
+        version: "*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: tests
+    - run: selene --version
