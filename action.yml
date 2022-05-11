@@ -7,7 +7,7 @@ inputs:
     description: 'SemVer version of Foreman to install'
   working-directory:
     required: false
-    description: 'Working directory to run `foreman install`` in'
+    description: 'Working directory to run `foreman install` in'
   token:
     required: true
     description: 'GitHub token from secrets.GITHUB_TOKEN'
