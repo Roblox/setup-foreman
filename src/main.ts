@@ -50,7 +50,9 @@ async function run(): Promise<void> {
     }
     await foreman.installTools();
   } catch (error) {
-    setFailed(error.message);
+    if (error instanceof Error) {
+      setFailed(error.message);
+    }
   }
 }
 
