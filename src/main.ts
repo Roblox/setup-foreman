@@ -1,20 +1,20 @@
-import * as core from "@actions/core";
-import * as tc from "@actions/tool-cache";
-import * as github from "@actions/github";
-import {resolve} from 'path';
+import {getInput, debug, addPath, setFailed} from "@actions/core";
+import {downloadTool, extractZip} from "@actions/tool-cache";
+import {GitHub} from "@actions/github";
+import {resolve} from "path";
 import {exec} from "@actions/exec";
 import foreman from "./foreman";
 
 async function run(): Promise<void> {
   try {
-    const versionReq: string = core.getInput("version");
-    const githubToken: string = core.getInput("token");
-    const workingDir: string = core.getInput("working-directory");
+    const versionReq: string = getInput("version");
+    const githubToken: string = getInput("token");
+    const workingDir: string = getInput("working-directory");
 
-    const octokit = new github.GitHub(githubToken);
+    const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
 
-    core.debug("Choosing release from GitHub API");
+    debug("Choosing release from GitHub API");
 
     const release = foreman.chooseRelease(versionReq, releases);
     if (release == null) {
@@ -23,7 +23,7 @@ async function run(): Promise<void> {
       );
     }
 
-    core.debug(`Chose release ${release.tag_name}`);
+    debug(`Chose release ${release.tag_name}`);
 
     const asset = foreman.chooseAsset(release);
     if (asset == null) {
@@ -32,11 +32,11 @@ async function run(): Promise<void> {
       );
     }
 
-    core.debug(`Chose release asset ${asset.browser_download_url}`);
+    debug(`Chose release asset ${asset.browser_download_url}`);
 
-    const zipPath = await tc.downloadTool(asset.browser_download_url);
-    const extractedPath = await tc.extractZip(zipPath, ".foreman-install");
-    core.addPath(resolve(extractedPath));
+    const zipPath = await downloadTool(asset.browser_download_url);
+    const extractedPath = await extractZip(zipPath, ".foreman-install");
+    addPath(resolve(extractedPath));
 
     if (process.platform === "darwin" || process.platform === "linux") {
       await exec("chmod +x .foreman-install/foreman");
@@ -50,7 +50,9 @@ async function run(): Promise<void> {
     }
     await foreman.installTools();
   } catch (error) {
-    core.setFailed(error.message);
+    if (error instanceof Error) {
+      setFailed(error.message);
+    }
   }
 }
 
