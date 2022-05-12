@@ -1,4 +1,4 @@
-import * as core from "@actions/core";
+import {addPath} from "@actions/core";
 import {exec} from "@actions/exec";
 import {GitHub} from "@actions/github";
 import semver from "semver";
@@ -69,9 +69,9 @@ async function authenticate(token: string): Promise<void> {
 
 function addBinDirToPath(): void {
   if (process.platform === "win32") {
-    core.addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
+    addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
   } else if (process.platform === "darwin" || process.platform === "linux") {
-    core.addPath(`${process.env.HOME}/.foreman/bin`);
+    addPath(`${process.env.HOME}/.foreman/bin`);
   } else {
     throw new Error(`Unsupported platform "${process.platform}"`);
   }
