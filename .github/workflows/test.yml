@@ -49,3 +49,7 @@ jobs:
         working-directory: tests
     - run: foreman --version
     - run: selene --version
+    - name: Run installed tool from subfolder
+      run: |
+        cd tests
+        selene --version
