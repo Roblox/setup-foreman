@@ -17,6 +17,8 @@ Add a step to your workflow file:
 #### `token` (required)
 A GitHub token used to interact with the GitHub API. This is used for installing Foreman itself, and then passed to Foreman to install other tools from GitHub.
 
+Defaults to `${{ github.token }}`
+
 #### `version` (optional)
 A SemVer version range of Foreman to install.
 
