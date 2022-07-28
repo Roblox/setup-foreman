@@ -2,6 +2,7 @@ import {addPath} from "@actions/core";
 import {exec} from "@actions/exec";
 import {GitHub} from "@actions/github";
 import semver from "semver";
+import os from "os";
 
 interface GitHubAsset {
   name: string;
@@ -47,7 +48,13 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
       name.includes("win64") ||
       name.includes("win32");
   } else if (process.platform === "darwin") {
-    platformMatcher = name => name.includes("macos");
+    const arch = os.arch();
+    if (arch === "x64") {
+      platformMatcher = name => name.includes("macos-x86_64");
+    } else {
+      platformMatcher = name => name.includes("macos-arm64");
+    }
+
   } else if (process.platform === "linux") {
     platformMatcher = name => name.includes("linux");
   } else {
