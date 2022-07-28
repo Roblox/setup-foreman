@@ -2,4 +2,3 @@
 
 [tools]
 selene = { source = "Kampfkarren/selene", version = "0.15.0" }
-rojo = { source = "Roblox/rojo", version = "0.6.0-alpha.1" }
