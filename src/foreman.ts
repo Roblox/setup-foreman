@@ -50,7 +50,11 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
   } else if (process.platform === "darwin") {
     const arch = os.arch();
     if (arch === "x64") {
-      platformMatcher = name => name.includes("macos-x86_64") || name.includes("macos");
+      if (release.tag_name >= 'v1.0.5') {
+        platformMatcher = name => name.includes("macos-x86_64");
+      } else {
+        platformMatcher = name => name.includes("macos");
+      }
     } else {
       platformMatcher = name => name.includes("macos-arm64");
     }
