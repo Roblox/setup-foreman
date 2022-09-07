@@ -3279,6 +3279,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = __webpack_require__(470);
 const exec_1 = __webpack_require__(986);
 const semver_1 = __importDefault(__webpack_require__(876));
+const os_1 = __importDefault(__webpack_require__(87));
 function getReleases(octokit) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield octokit.repos.listReleases({
@@ -3306,7 +3307,18 @@ function chooseAsset(release) {
             name.includes("win32");
     }
     else if (process.platform === "darwin") {
-        platformMatcher = name => name.includes("macos");
+        const arch = os_1.default.arch();
+        if (arch === "x64") {
+            if (release.tag_name >= 'v1.0.5') {
+                platformMatcher = name => name.includes("macos-x86_64");
+            }
+            else {
+                platformMatcher = name => name.includes("macos");
+            }
+        }
+        else {
+            platformMatcher = name => name.includes("macos-arm64");
+        }
     }
     else if (process.platform === "linux") {
         platformMatcher = name => name.includes("linux");
