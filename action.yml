@@ -12,5 +12,5 @@ inputs:
     required: true
     description: 'GitHub token from secrets.GITHUB_TOKEN'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
