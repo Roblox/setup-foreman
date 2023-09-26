@@ -30,6 +30,7 @@ jobs:
       with:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
+        allow-external-github-orgs: true
     - run: foreman --version
     - run: rojo --version
 
@@ -54,5 +55,6 @@ jobs:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
         working-directory: tests
+        allow-external-github-orgs: true
     - run: foreman --version
     - run: selene --version
