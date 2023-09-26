@@ -1,6 +1,6 @@
 // who needs tests?
 import configFile from "../src/configFile";
-import { parse } from "toml";
+import {parse} from "toml";
 
 test("get off my back, Jest", () => {
   expect(5).toEqual(5);
