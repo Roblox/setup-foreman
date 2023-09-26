@@ -3,6 +3,7 @@ import {downloadTool, extractZip} from "@actions/tool-cache";
 import {GitHub} from "@actions/github";
 import {resolve} from "path";
 import {exec} from "@actions/exec";
+import configFile from "./configFile";
 import foreman from "./foreman";
 
 async function run(): Promise<void> {
@@ -10,6 +11,13 @@ async function run(): Promise<void> {
     const versionReq: string = getInput("version");
     const githubToken: string = getInput("token");
     const workingDir: string = getInput("working-directory");
+    const allowExternalGithubOrgs: string = getInput(
+      "allow-external-github-orgs"
+    ).toLowerCase();
+
+    if (allowExternalGithubOrgs == null || allowExternalGithubOrgs != "true") {
+      configFile.checkSameOrgInConfig();
+    }
 
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
