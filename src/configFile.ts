@@ -1,6 +1,6 @@
 import { parse } from "toml";
 import { readFile } from "fs";
-import findUp = require("find-up");
+import findUp from "find-up";
 interface foremanConfig {
   tools: foremanTool[];
 }
