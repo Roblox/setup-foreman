@@ -2,7 +2,9 @@ import { parse } from "toml";
 import { readFile } from "fs";
 import findUp from "find-up";
 interface foremanConfig {
-  tools: foremanTool[];
+  tools: {
+    [tool_name: string]: foremanTool
+  };
 }
 
 interface foremanTool {
