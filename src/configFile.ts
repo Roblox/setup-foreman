@@ -1,6 +1,6 @@
-import {join, dirname} from "path";
-import {parse} from "toml";
-import {readFile, existsSync} from "fs";
+import { parse } from "toml";
+import { readFile } from "fs";
+let findUp = require("find-up");
 interface foremanConfig {
   tools: foremanTool[];
 }
@@ -13,19 +13,6 @@ interface foremanTool {
 }
 
 const MANIFEST = "foreman.toml";
-
-function findManifestPath(): string | null {
-  let directory = __dirname;
-  while (directory != "/") {
-    const configFilePath = join(directory, MANIFEST);
-    if (existsSync(configFilePath)) {
-      return configFilePath;
-    } else {
-      directory = dirname(directory);
-    }
-  }
-  return null;
-}
 
 function checkSameOrgToolSpecs(manifestContent: foremanConfig): boolean {
   const tools = manifestContent.tools;
@@ -61,7 +48,7 @@ function checkSameOrgToolSpecs(manifestContent: foremanConfig): boolean {
 }
 
 async function checkSameOrgInConfig(): Promise<void> {
-  const manifestPath = findManifestPath();
+  const manifestPath = await findUp(MANIFEST);
   if (manifestPath == null) {
     throw new Error("Foreman config file could not be found");
   }
@@ -70,12 +57,10 @@ async function checkSameOrgInConfig(): Promise<void> {
     if (err) {
       throw new Error("Could not read Foreman config file");
     }
-    {
-      const manifestContent = parse(data);
-      const sameGithubOrgSource = checkSameOrgToolSpecs(manifestContent);
-      if (sameGithubOrgSource == false) {
-        throw new Error("Not all GitHub orgs are the same");
-      }
+    const manifestContent = parse(data);
+    const sameGithubOrgSource = checkSameOrgToolSpecs(manifestContent);
+    if (sameGithubOrgSource == false) {
+      throw new Error("Not all GitHub orgs are the same");
     }
   });
 }
