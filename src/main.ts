@@ -22,7 +22,7 @@ async function run(): Promise<void> {
       }
       const org = repo.owner.name;
       if (org == null) {
-        throw new Error(`Could not find owner of the repository`);
+        throw new Error(`Could not find owner of the repository. owner: ${repo.owner}`);
       }
       configFile.checkSameOrgInConfig(org);
     }
