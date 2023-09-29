@@ -1,9 +1,9 @@
-import { parse } from "toml";
-import { readFile } from "fs";
+import {parse} from "toml";
+import {readFile} from "fs";
 import findUp from "find-up";
 interface foremanConfig {
   tools: {
-    [tool_name: string]: foremanTool
+    [tool_name: string]: foremanTool;
   };
 }
 
@@ -16,7 +16,10 @@ interface foremanTool {
 
 const MANIFEST = "foreman.toml";
 
-function checkSameOrgToolSpecs(manifestContent: foremanConfig, org: string): boolean {
+function checkSameOrgToolSpecs(
+  manifestContent: foremanConfig,
+  org: string
+): boolean {
   const tools = manifestContent.tools;
   if (tools == null) {
     throw new Error("Tools section in Foreman config not found");
@@ -42,10 +45,10 @@ function checkSameOrgToolSpecs(manifestContent: foremanConfig, org: string): boo
     }
 
     if (tool_org != org) {
-      return false
+      return false;
     }
   }
-  return true
+  return true;
 }
 
 async function checkSameOrgInConfig(org: string): Promise<void> {
@@ -61,7 +64,9 @@ async function checkSameOrgInConfig(org: string): Promise<void> {
     const manifestContent = parse(data);
     const sameGithubOrgSource = checkSameOrgToolSpecs(manifestContent, org);
     if (sameGithubOrgSource == false) {
-      throw new Error(`All GitHub orgs in Foreman config must match the org setup-foreman runs in: ${org}. To disable this check, set the \"allow-external-github-orgs\" option to true.`);
+      throw new Error(
+        `All GitHub orgs in Foreman config must match the org setup-foreman runs in: ${org}. To disable this check, set the \"allow-external-github-orgs\" option to true.`
+      );
     }
   });
 }

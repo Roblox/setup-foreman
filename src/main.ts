@@ -16,17 +16,13 @@ async function run(): Promise<void> {
     ).toLowerCase();
 
     if (allowExternalGithubOrgs != "true") {
-      let repo = context.payload.repository;
+      const repo = context.payload.repository;
       if (repo == null) {
-        throw new Error(
-          `Could not find repository`
-        )
+        throw new Error(`Could not find repository`);
       }
-      let org = repo.owner.name;
+      const org = repo.owner.name;
       if (org == null) {
-        throw new Error(
-          `Could not find owner of the repository`
-        )
+        throw new Error(`Could not find owner of the repository`);
       }
       configFile.checkSameOrgInConfig(org);
     }

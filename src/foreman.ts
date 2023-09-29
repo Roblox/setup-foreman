@@ -1,6 +1,6 @@
-import { addPath } from "@actions/core";
-import { exec } from "@actions/exec";
-import { GitHub } from "@actions/github";
+import {addPath} from "@actions/core";
+import {exec} from "@actions/exec";
+import {GitHub} from "@actions/github";
 import semver from "semver";
 import os from "os";
 
