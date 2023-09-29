@@ -1,5 +1,5 @@
-import {parse} from "toml";
-import {readFile} from "fs";
+import { parse } from "toml";
+import { readFile } from "fs";
 import findUp from "find-up";
 interface foremanConfig {
   tools: {
@@ -40,7 +40,7 @@ function checkSameOrgToolSpecs(
 
     if (tool_org == null) {
       throw new Error(
-        `Org not found in tool spec definition for: ${tool_name}`
+        `Org not found in tool spec definition for: ${tool_name}. Foreman config is likely defined incorrectly.`
       );
     }
 
