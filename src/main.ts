@@ -1,8 +1,8 @@
-import {getInput, debug, addPath, setFailed} from "@actions/core";
-import {downloadTool, extractZip} from "@actions/tool-cache";
-import {GitHub} from "@actions/github";
-import {resolve} from "path";
-import {exec} from "@actions/exec";
+import { getInput, debug, addPath, setFailed } from "@actions/core";
+import { downloadTool, extractZip } from "@actions/tool-cache";
+import { GitHub, context } from "@actions/github";
+import { resolve } from "path";
+import { exec } from "@actions/exec";
 import configFile from "./configFile";
 import foreman from "./foreman";
 
@@ -16,12 +16,23 @@ async function run(): Promise<void> {
     ).toLowerCase();
 
     if (allowExternalGithubOrgs != "true") {
-      configFile.checkSameOrgInConfig();
+      let repo = context.payload.repository;
+      if (repo == null) {
+        throw new Error(
+          `Could not find repository`
+        )
+      }
+      let org = repo.owner.name;
+      if (org == null) {
+        throw new Error(
+          `Could not find owner of the repository`
+        )
+      }
+      configFile.checkSameOrgInConfig(org);
     }
 
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
-
     debug("Choosing release from GitHub API");
 
     const release = foreman.chooseRelease(versionReq, releases);
