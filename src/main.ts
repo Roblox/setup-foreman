@@ -1,6 +1,6 @@
 import { getInput, debug, addPath, setFailed } from "@actions/core";
 import { downloadTool, extractZip } from "@actions/tool-cache";
-import { GitHub, context } from "@actions/github";
+import { GitHub } from "@actions/github";
 import { resolve } from "path";
 import { exec } from "@actions/exec";
 import configFile from "./configFile";
