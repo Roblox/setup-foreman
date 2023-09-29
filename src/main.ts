@@ -15,7 +15,7 @@ async function run(): Promise<void> {
       "allow-external-github-orgs"
     ).toLowerCase();
 
-    if (allowExternalGithubOrgs == null || allowExternalGithubOrgs != "true") {
+    if (allowExternalGithubOrgs != "true") {
       configFile.checkSameOrgInConfig();
     }
 
