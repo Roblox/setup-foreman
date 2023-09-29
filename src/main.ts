@@ -16,14 +16,16 @@ async function run(): Promise<void> {
     ).toLowerCase();
 
     if (allowExternalGithubOrgs != "true") {
-      const repo = context.payload.repository;
-      if (repo == null) {
-        throw new Error(`Could not find repository`);
+      // const repo = new Context();
+      if (!process.env.GITHUB_REPOSITORY) {
+        throw new Error(`Could not find repository setup-foreman is running in`);
       }
-      const org = repo.owner.name;
-      if (org == null) {
-        throw new Error(`Could not find owner of the repository. repo: ${JSON.stringify(repo)}`);
+      const repository = process.env.GITHUB_REPOSITORY.split('/');
+      if (repository.length == 0) {
+        throw new Error(`Could not find owner of repository setup-foreman is running in`)
       }
+      const org = repository[0]
+      console.log(org);
       configFile.checkSameOrgInConfig(org);
     }
 
