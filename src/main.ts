@@ -16,17 +16,20 @@ async function run(): Promise<void> {
     ).toLowerCase();
 
     if (allowExternalGithubOrgs != "true") {
-      // const repo = new Context();
+      debug("Checking tools in Foreman Config come from source org");
       if (!process.env.GITHUB_REPOSITORY) {
-        throw new Error(`Could not find repository setup-foreman is running in`);
+        throw new Error(
+          `Could not find repository setup-foreman is running in`
+        );
       }
-      const repository = process.env.GITHUB_REPOSITORY.split('/');
+      const repository = process.env.GITHUB_REPOSITORY.split("/");
       if (repository.length == 0) {
-        throw new Error(`Could not find owner of repository setup-foreman is running in`)
+        throw new Error(
+          `Could not find owner of repository setup-foreman is running in`
+        );
       }
-      const org = repository[0]
-      console.log(org);
-      configFile.checkSameOrgInConfig(org);
+      const org = repository[0];
+      configFile.checkSameOrgInConfig(org.toLowerCase());
     }
 
     const octokit = new GitHub(githubToken);
