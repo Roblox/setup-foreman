@@ -15,16 +15,6 @@ async function run(): Promise<void> {
       "allow-external-github-orgs"
     ).toLowerCase();
 
-    if (allowExternalGithubOrgs != "true") {
-      debug("Checking tools in Foreman Config come from source org");
-      const owner = process.env.GITHUB_REPOSITORY_OWNER;
-      if (!owner) {
-        throw new Error(
-          `Could not find repository owner setup-foreman is running in`
-        );
-      }
-      configFile.checkSameOrgInConfig(owner.toLowerCase());
-    }
 
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
@@ -61,8 +51,19 @@ async function run(): Promise<void> {
 
     if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
       process.chdir(workingDir);
-      console.log(__dirname)
     }
+
+    if (allowExternalGithubOrgs != "true") {
+      debug("Checking tools in Foreman Config come from source org");
+      const owner = process.env.GITHUB_REPOSITORY_OWNER;
+      if (!owner) {
+        throw new Error(
+          `Could not find repository owner setup-foreman is running in`
+        );
+      }
+      configFile.checkSameOrgInConfig(owner.toLowerCase());
+    }
+
     await foreman.installTools();
   } catch (error) {
     if (error instanceof Error) {

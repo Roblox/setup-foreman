@@ -43,7 +43,6 @@ function checkSameOrgToolSpecs(
         `Org not found in tool spec definition for: ${tool_name}. Foreman config is likely defined incorrectly.`
       );
     }
-    console.log(tool_org);
     if (tool_org.toLowerCase() != org) {
       return false;
     }
