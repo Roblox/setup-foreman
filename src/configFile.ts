@@ -44,7 +44,7 @@ function checkSameOrgToolSpecs(
       );
     }
 
-    if (tool_org != org) {
+    if (tool_org.toLowerCase() != org) {
       return false;
     }
   }
