@@ -21,24 +21,24 @@ function checkSameOrgToolSpecs(
   org: string
 ): boolean {
   const tools = manifestContent.tools;
-  if (tools == null) {
+  if (!tools) {
     throw new Error("Tools section in Foreman config not found");
   }
 
   for (const tool_name in tools) {
     const tool_spec = tools[tool_name];
     let source = tool_spec["source"];
-    if (source == null) {
+    if (!source) {
       source = tool_spec["github"];
     }
-    if (source == null) {
+    if (!source) {
       continue;
     }
 
     const source_array = source.split("/");
     const tool_org = source_array[0];
 
-    if (tool_org == null) {
+    if (!tool_org) {
       throw new Error(
         `Org not found in tool spec definition for: ${tool_name}. Foreman config is likely defined incorrectly.`
       );
@@ -53,17 +53,17 @@ function checkSameOrgToolSpecs(
 
 async function checkSameOrgInConfig(org: string): Promise<void> {
   const manifestPath = await findUp(MANIFEST);
-  if (manifestPath == null) {
+  if (!manifestPath) {
     throw new Error("setup-foreman could not find Foreman config file");
   }
 
   await readFile(manifestPath, "utf8", (err, data) => {
     if (err) {
-      throw new Error("setup-foreman Could not read Foreman config file");
+      throw new Error(`setup-foreman Could not read Foreman config file. err: ${err}`);
     }
     const manifestContent = parse(data);
     const sameGithubOrgSource = checkSameOrgToolSpecs(manifestContent, org);
-    if (sameGithubOrgSource == false) {
+    if (!sameGithubOrgSource) {
       throw new Error(
         `All GitHub orgs in Foreman config must match the org setup-foreman runs in: ${org}. To disable this check, set the \"allow-external-github-orgs\" option to true.`
       );

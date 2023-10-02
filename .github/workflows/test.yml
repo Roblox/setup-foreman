@@ -39,7 +39,6 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
-
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
@@ -56,5 +55,29 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         working-directory: tests
         allow-external-github-orgs: true
+    - run: foreman --version
+    - run: selene --version
+
+  build-in-dir-external-org-false:
+    name: Test setup-foreman action with working-directory
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm install
+    - run: npm run all
+    - run: npm run pack
+    - name: setup-foreman with working-directory
+      uses: ./
+      with:
+        version: "*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: tests
+        allow-external-github-orgs: false
     - run: foreman --version
     - run: selene --version
