@@ -61,6 +61,7 @@ async function run(): Promise<void> {
 
     if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
       process.chdir(workingDir);
+      console.log(__dirname)
     }
     await foreman.installTools();
   } catch (error) {
