@@ -59,7 +59,7 @@ jobs:
     - run: selene --version
 
   build-in-dir-external-org-false:
-    name: Test setup-foreman action with working-directory
+    name: Test setup-foreman action allow-external-gitub-org false
     strategy:
       matrix:
         os: ["ubuntu-latest"]
@@ -81,3 +81,7 @@ jobs:
         working-directory: tests
         allow-external-github-orgs: false
       continue-on-error: true
+    
+    - name: fail on success
+      if: ${{ failure() }}
+      run: exit 1
