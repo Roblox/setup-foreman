@@ -73,15 +73,18 @@ jobs:
     - run: npm run all
     - run: npm run pack
 
-    - name: setup-foreman with working-directory expect failure
+    - name: setup-foreman-failure
       uses: ./
       with:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
         working-directory: tests
         allow-external-github-orgs: false
-      continue-on-error: true
-    
+
     - name: fail on success
-      if: ${{ failure() }}
+      if: always() && steps.setup-foreman-failiure.outcome == 'success'
       run: exit 1
+    
+    - name: succeed of failure
+      if: always()
+      run: exit 0
