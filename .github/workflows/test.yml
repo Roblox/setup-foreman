@@ -58,7 +58,7 @@ jobs:
     - run: foreman --version
     - run: selene --version
 
-  build-in-dir-external-org-false:
+  external-org-false-failure:
     name: Test setup-foreman action allow-external-gitub-org false
     strategy:
       matrix:
@@ -89,3 +89,27 @@ jobs:
     
     - name: succeed on failure
       run: exit 0
+
+  external-org-false-success:
+    name: Test setup-foreman action allow-external-gitub-org false
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm install
+    - run: npm run all
+    - run: npm run pack
+
+    - name: setup-foreman-failure
+      uses: ./
+      id: setup-foreman-failure
+      with:
+        version: "*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: tests-external-org
+        allow-external-github-orgs: false
