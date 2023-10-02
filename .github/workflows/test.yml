@@ -80,7 +80,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         working-directory: tests
         allow-external-github-orgs: false
-
+      continue-on-error: true
+      
     - name: fail on success
       if: always() && steps.setup-foreman-failiure.outcome == 'success'
       run: exit 1
