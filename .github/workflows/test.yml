@@ -84,7 +84,7 @@ jobs:
       continue-on-error: true
 
     - name: fail on success
-      if: always() && steps.id.setup-foreman-failure.outcome == 'success'
+      if: always() && steps.setup-foreman-failure.outcome == 'success'
       run: exit 1
     
     - name: succeed of failure
