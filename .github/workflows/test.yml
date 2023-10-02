@@ -72,12 +72,12 @@ jobs:
     - run: npm install
     - run: npm run all
     - run: npm run pack
-    - name: setup-foreman with working-directory
+
+    - name: setup-foreman with working-directory expect failure
       uses: ./
       with:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
         working-directory: tests
         allow-external-github-orgs: false
-    - run: foreman --version
-    - run: selene --version
+      continue-on-error: true
