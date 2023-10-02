@@ -59,7 +59,7 @@ jobs:
     - run: selene --version
 
   external-org-false-failure:
-    name: Test setup-foreman action allow-external-gitub-org false
+    name: Test allow-external-gitub-org false expect failure
     strategy:
       matrix:
         os: ["ubuntu-latest"]
@@ -91,7 +91,7 @@ jobs:
       run: exit 0
 
   external-org-false-success:
-    name: Test setup-foreman action allow-external-gitub-org false
+    name: Test allow-external-gitub-org false expect success
     strategy:
       matrix:
         os: ["ubuntu-latest"]
@@ -105,9 +105,8 @@ jobs:
     - run: npm run all
     - run: npm run pack
 
-    - name: setup-foreman-failure
+    - name: setup-foreman-success
       uses: ./
-      id: setup-foreman-failure
       with:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}

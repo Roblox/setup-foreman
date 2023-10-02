@@ -1,0 +1,5 @@
+# This file is used as a way to make sure that setup-foreman is functioning.
+
+[tools]
+selene = { source = "Roblox/Kampfkarren-selene", version = "0.15.0" }
+stylua = { source = "Roblox/JohnnyMorganz-stylua", version = "0.18.1" }
