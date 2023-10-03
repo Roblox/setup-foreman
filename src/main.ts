@@ -1,8 +1,9 @@
-import {getInput, debug, addPath, setFailed} from "@actions/core";
-import {downloadTool, extractZip} from "@actions/tool-cache";
-import {GitHub} from "@actions/github";
-import {resolve} from "path";
-import {exec} from "@actions/exec";
+import { getInput, debug, addPath, setFailed } from "@actions/core";
+import { downloadTool, extractZip } from "@actions/tool-cache";
+import { GitHub } from "@actions/github";
+import { resolve } from "path";
+import { exec } from "@actions/exec";
+import configFile from "./configFile";
 import foreman from "./foreman";
 
 async function run(): Promise<void> {
@@ -10,10 +11,13 @@ async function run(): Promise<void> {
     const versionReq: string = getInput("version");
     const githubToken: string = getInput("token");
     const workingDir: string = getInput("working-directory");
+    const allowExternalGithubOrgs: string = getInput(
+      "allow-external-github-orgs"
+    ).toLowerCase();
+
 
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
-
     debug("Choosing release from GitHub API");
 
     const release = foreman.chooseRelease(versionReq, releases);
@@ -48,6 +52,18 @@ async function run(): Promise<void> {
     if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
       process.chdir(workingDir);
     }
+
+    if (allowExternalGithubOrgs != "true") {
+      debug("Checking tools in Foreman Config come from source org");
+      const owner = process.env.GITHUB_REPOSITORY_OWNER;
+      if (owner == undefined) {
+        throw new Error(
+          `Could not find repository owner setup-foreman is running in`
+        );
+      }
+      configFile.checkSameOrgInConfig(owner.toLowerCase());
+    }
+
     await foreman.installTools();
   } catch (error) {
     if (error instanceof Error) {

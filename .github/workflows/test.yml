@@ -30,6 +30,7 @@ jobs:
       with:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
+        allow-external-github-orgs: true
     - run: foreman --version
     - run: rojo --version
 
@@ -38,7 +39,6 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
-
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
@@ -54,5 +54,61 @@ jobs:
         version: "*"
         token: ${{ secrets.GITHUB_TOKEN }}
         working-directory: tests
+        allow-external-github-orgs: true
     - run: foreman --version
     - run: selene --version
+
+  external-org-false-failure:
+    name: Test allow-external-gitub-org false expect failure
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm install
+    - run: npm run all
+    - run: npm run pack
+
+    - name: setup-foreman-failure
+      uses: ./
+      id: setup-foreman-failure
+      with:
+        version: "*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: tests
+        allow-external-github-orgs: false
+      continue-on-error: true
+
+    - name: fail on success
+      if: steps.setup-foreman-failure.outcome == 'success'
+      run: exit 1
+    
+    - name: succeed on failure
+      run: exit 0
+
+  external-org-false-success:
+    name: Test allow-external-gitub-org false expect success
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm install
+    - run: npm run all
+    - run: npm run pack
+
+    - name: setup-foreman-success
+      uses: ./
+      with:
+        version: "*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: tests-external-org
+        allow-external-github-orgs: false
