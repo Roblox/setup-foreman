@@ -21,24 +21,24 @@ function checkSameOrgToolSpecs(
   org: string
 ): boolean {
   const tools = manifestContent.tools;
-  if (!tools) {
+  if (tools == null) {
     throw new Error("Tools section in Foreman config not found");
   }
 
   for (const tool_name in tools) {
     const tool_spec = tools[tool_name];
     let source = tool_spec["source"];
-    if (!source) {
+    if (source == undefined) {
       source = tool_spec["github"];
     }
-    if (!source) {
+    if (source == undefined) {
       continue;
     }
 
     const source_array = source.split("/");
     const tool_org = source_array[0];
 
-    if (!tool_org) {
+    if (tool_org == null) {
       throw new Error(
         `Org not found in tool spec definition for: ${tool_name}. Foreman config is likely defined incorrectly.`
       );
@@ -52,7 +52,7 @@ function checkSameOrgToolSpecs(
 
 async function checkSameOrgInConfig(org: string): Promise<void> {
   const manifestPath = await findUp(MANIFEST);
-  if (!manifestPath) {
+  if (manifestPath == undefined) {
     throw new Error("setup-foreman could not find Foreman config file");
   }
 

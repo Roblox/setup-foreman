@@ -56,7 +56,7 @@ async function run(): Promise<void> {
     if (allowExternalGithubOrgs != "true") {
       debug("Checking tools in Foreman Config come from source org");
       const owner = process.env.GITHUB_REPOSITORY_OWNER;
-      if (!owner) {
+      if (owner == undefined) {
         throw new Error(
           `Could not find repository owner setup-foreman is running in`
         );
