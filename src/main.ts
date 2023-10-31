@@ -15,7 +15,7 @@ async function run(): Promise<void> {
       "allow-external-github-orgs"
     ).toLowerCase();
     const skipInstallTools: String = getInput("skip-install-tools");
-    console.log("test")
+
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
     debug("Choosing release from GitHub API");
