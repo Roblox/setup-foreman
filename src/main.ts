@@ -14,7 +14,7 @@ async function run(): Promise<void> {
     const allowExternalGithubOrgs: string = getInput(
       "allow-external-github-orgs"
     ).toLowerCase();
-
+    const skipInstallTools: String = getInput("skip-install-tools");
 
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
@@ -64,7 +64,9 @@ async function run(): Promise<void> {
       configFile.checkSameOrgInConfig(owner.toLowerCase());
     }
 
-    await foreman.installTools();
+    if (skipInstallTools != "true") {
+      await foreman.installTools();
+    }
   } catch (error) {
     if (error instanceof Error) {
       setFailed(error.message);
