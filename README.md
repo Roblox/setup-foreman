@@ -30,6 +30,9 @@ If not specified the root job folder will be used.
 #### `allow-external-github-orgs` (optional)
 A boolean value to allow external github orgs in the foreman manifest file.
 
+#### `skip-install-tools` (optional)
+A boolean value to install foreman without downloading any tools
+
 If not specified, external github orgs will not be allowed.
 ## License
 setup-foreman is available under the MIT license. See [LICENSE.txt](LICENSE.txt) or <https://opensource.org/licenses/MIT> for details.
