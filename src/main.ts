@@ -15,12 +15,12 @@ async function run(): Promise<void> {
       "allow-external-github-orgs"
     ).toLowerCase();
 
-
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
+    const validReleases = foreman.filterValidReleases(releases)
     debug("Choosing release from GitHub API");
 
-    const release = foreman.chooseRelease(versionReq, releases);
+    const release = foreman.chooseRelease(versionReq, validReleases);
     if (release == null) {
       throw new Error(
         `Could not find Foreman release for version ${versionReq}`
