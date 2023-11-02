@@ -20,7 +20,7 @@ async function getReleases(octokit: GitHub): Promise<GitHubRelease[]> {
     repo: "foreman"
   });
 
-  let releases = response.data as GitHubRelease[];
+  const releases = response.data as GitHubRelease[];
   releases.sort((a, b) => -semver.compare(a.tag_name, b.tag_name));
 
   return releases;
