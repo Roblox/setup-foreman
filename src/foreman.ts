@@ -1,6 +1,6 @@
-import {addPath} from "@actions/core";
-import {exec} from "@actions/exec";
-import {GitHub} from "@actions/github";
+import { addPath } from "@actions/core";
+import { exec } from "@actions/exec";
+import { GitHub } from "@actions/github";
 import semver from "semver";
 import os from "os";
 
@@ -21,7 +21,6 @@ async function getReleases(octokit: GitHub): Promise<GitHubRelease[]> {
   });
 
   let releases = response.data as GitHubRelease[];
-  releases = filterValidReleases(releases);
   releases.sort((a, b) => -semver.compare(a.tag_name, b.tag_name));
 
   return releases;
@@ -109,4 +108,4 @@ export default {
   filterValidReleases
 };
 
-export type {GitHubRelease};
+export type { GitHubRelease };
