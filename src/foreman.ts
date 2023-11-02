@@ -20,10 +20,18 @@ async function getReleases(octokit: GitHub): Promise<GitHubRelease[]> {
     repo: "foreman"
   });
 
-  const releases = response.data as GitHubRelease[];
+  let releases = response.data as GitHubRelease[];
+  releases = filterValidReleases(releases);
   releases.sort((a, b) => -semver.compare(a.tag_name, b.tag_name));
 
   return releases;
+}
+
+function filterValidReleases(releases: GitHubRelease[]): GitHubRelease[] {
+  return releases.filter(release => {
+    const tag = release.tag_name;
+    return tag.startsWith("v") && semver.valid(tag);
+  });
 }
 
 function chooseRelease(
@@ -97,5 +105,8 @@ export default {
   chooseAsset,
   authenticate,
   addBinDirToPath,
-  installTools
+  installTools,
+  filterValidReleases
 };
+
+export type {GitHubRelease};

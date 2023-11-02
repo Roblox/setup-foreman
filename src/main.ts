@@ -1,8 +1,8 @@
-import { getInput, debug, addPath, setFailed } from "@actions/core";
-import { downloadTool, extractZip } from "@actions/tool-cache";
-import { GitHub } from "@actions/github";
-import { resolve } from "path";
-import { exec } from "@actions/exec";
+import {getInput, debug, addPath, setFailed} from "@actions/core";
+import {downloadTool, extractZip} from "@actions/tool-cache";
+import {GitHub} from "@actions/github";
+import {resolve} from "path";
+import {exec} from "@actions/exec";
 import configFile from "./configFile";
 import foreman from "./foreman";
 
@@ -14,7 +14,6 @@ async function run(): Promise<void> {
     const allowExternalGithubOrgs: string = getInput(
       "allow-external-github-orgs"
     ).toLowerCase();
-
 
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);

@@ -1,5 +1,5 @@
-import { parse } from "toml";
-import { readFile } from "fs";
+import {parse} from "toml";
+import {readFile} from "fs";
 import findUp from "find-up";
 interface foremanConfig {
   tools: {
@@ -58,7 +58,9 @@ async function checkSameOrgInConfig(org: string): Promise<void> {
 
   await readFile(manifestPath, "utf8", (err, data) => {
     if (err) {
-      throw new Error(`setup-foreman Could not read Foreman config file. err: ${err}`);
+      throw new Error(
+        `setup-foreman Could not read Foreman config file. err: ${err}`
+      );
     }
     const manifestContent = parse(data);
     const sameGithubOrgSource = checkSameOrgToolSpecs(manifestContent, org);
