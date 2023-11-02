@@ -1,7 +1,7 @@
 import configFile from "../src/configFile";
 import foreman from "../src/foreman";
-import type {GitHubRelease} from "../src/foreman";
-import {parse} from "toml";
+import type { GitHubRelease } from "../src/foreman";
+import { parse } from "toml";
 test("get off my back, Jest", () => {
   expect(5).toEqual(5);
 });
@@ -52,6 +52,10 @@ test("filter valid releases", () => {
     },
     {
       tag_name: "4.3.0",
+      assets: []
+    },
+    {
+      tag_name: "verybadtag",
       assets: []
     }
   ];
