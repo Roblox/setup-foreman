@@ -11,11 +11,14 @@ async function run(): Promise<void> {
     const versionReq: string = getInput("version");
     const githubToken: string = getInput("token");
     const workingDir: string = getInput("working-directory");
+    const githubApiUrl: string = getInput("github-api-url");
     const allowExternalGithubOrgs: string = getInput(
       "allow-external-github-orgs"
     ).toLowerCase();
 
-    const octokit = new GitHub(githubToken);
+    const octokit = new GitHub(githubToken, {
+      baseUrl: githubApiUrl
+    });
     const releases = await foreman.getReleases(octokit);
     const validReleases = foreman.filterValidReleases(releases)
     debug("Choosing release from GitHub API");
