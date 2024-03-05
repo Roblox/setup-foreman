@@ -40,5 +40,14 @@ value as the current environment, which will usually be
 This parameter exists primarily to allow GitHub Enterprise to point back to
 GitHub Cloud to install publicly hosted tools.
 
+As such, for any use of this action in GitHub Enterprise, `github-api-url`
+should be included like so:
+```yaml
+- uses: Roblox/setup-foreman@v1
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }}
+    github-api-url: "https://api.github.com"
+```
+
 ## License
 setup-foreman is available under the MIT license. See [LICENSE.txt](LICENSE.txt) or <https://opensource.org/licenses/MIT> for details.
