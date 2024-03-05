@@ -48,14 +48,16 @@ async function run(): Promise<void> {
       await exec("chmod +x .foreman-install/foreman");
     }
 
-    if ((artifactoryUrl == "") != (artifactoryToken == "")) {
+    await foreman.authenticate(githubToken);
+
+    if (artifactoryUrl != "" && artifactoryToken != "") { // both defined
+      await foreman.addArtifactoryToken(artifactoryUrl, artifactoryToken);
+    } else if (artifactoryUrl != "" || artifactoryToken != "") { // only one defined
       throw new Error(
         "Both artifactory-url and artifactory-token must be set or null"
       );
     }
 
-    await foreman.authenticate(githubToken);
-    await foreman.addArtifactoryToken(artifactoryUrl, artifactoryToken);
     foreman.addBinDirToPath();
 
     if (workingDir !== undefined && workingDir !== null && workingDir !== "") {
