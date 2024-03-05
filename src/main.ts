@@ -1,8 +1,8 @@
-import { getInput, debug, addPath, setFailed } from "@actions/core";
-import { downloadTool, extractZip } from "@actions/tool-cache";
-import { GitHub } from "@actions/github";
-import { resolve } from "path";
-import { exec } from "@actions/exec";
+import {getInput, debug, addPath, setFailed} from "@actions/core";
+import {downloadTool, extractZip} from "@actions/tool-cache";
+import {GitHub} from "@actions/github";
+import {resolve} from "path";
+import {exec} from "@actions/exec";
 import configFile from "./configFile";
 import foreman from "./foreman";
 
@@ -15,6 +15,8 @@ async function run(): Promise<void> {
     const allowExternalGithubOrgs: string = getInput(
       "allow-external-github-orgs"
     ).toLowerCase();
+    const artifactoryUrl = getInput("artifactory-url");
+    const artifactoryToken = getInput("artifactory-token");
 
     const octokit = new GitHub(githubToken, {
       baseUrl: githubApiUrl
@@ -50,6 +52,15 @@ async function run(): Promise<void> {
     }
 
     await foreman.authenticate(githubToken);
+
+    if (artifactoryUrl != "" && artifactoryToken != "") { // both defined
+      await foreman.addArtifactoryToken(artifactoryUrl, artifactoryToken);
+    } else if (artifactoryUrl != "" || artifactoryToken != "") { // only one defined
+      throw new Error(
+        "Both artifactory-url and artifactory-token must be set or null"
+      );
+    }
+
     foreman.addBinDirToPath();
 
     if (workingDir !== undefined && workingDir !== null && workingDir !== "") {

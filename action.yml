@@ -14,6 +14,15 @@ inputs:
   token:
     required: true
     description: 'GitHub token from secrets.GITHUB_TOKEN'
+  allow-external-github-orgs:
+    required: false
+    description: 'Allow installing from external GitHub organizations'
+  artifactory-url:
+    required: false
+    description: 'Artifactory URL to use for downloading Foreman tools'
+  artifactory-token:
+    required: false
+    description: 'Artifactory token to use for downloading Foreman tools'
 runs:
   using: 'node16'
   main: 'dist/index.js'
