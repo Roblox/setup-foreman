@@ -31,5 +31,23 @@ If not specified the root job folder will be used.
 A boolean value to allow external github orgs in the foreman manifest file.
 
 If not specified, external github orgs will not be allowed.
+
+#### `github-api-url` (optional)
+Override for the GitHub API URL. By default GitHub Actions will supply this
+value as the current environment, which will usually be
+`https://api.github.com`.
+
+This parameter exists primarily to allow GitHub Enterprise to point back to
+GitHub Cloud to install publicly hosted tools.
+
+As such, for any use of this action in GitHub Enterprise, `github-api-url`
+should be included like so:
+```yaml
+- uses: Roblox/setup-foreman@v1
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }}
+    github-api-url: "https://api.github.com"
+```
+
 ## License
 setup-foreman is available under the MIT license. See [LICENSE.txt](LICENSE.txt) or <https://opensource.org/licenses/MIT> for details.
