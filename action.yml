@@ -8,6 +8,9 @@ inputs:
   working-directory:
     required: false
     description: 'Working directory to run `foreman install` in'
+  github-api-url:
+    required: false
+    description: 'GitHub API to make requests to'
   token:
     required: true
     description: 'GitHub token from secrets.GITHUB_TOKEN'
