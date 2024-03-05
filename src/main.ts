@@ -1,8 +1,8 @@
-import { getInput, debug, addPath, setFailed } from "@actions/core";
-import { downloadTool, extractZip } from "@actions/tool-cache";
-import { GitHub } from "@actions/github";
-import { resolve } from "path";
-import { exec } from "@actions/exec";
+import {getInput, debug, addPath, setFailed} from "@actions/core";
+import {downloadTool, extractZip} from "@actions/tool-cache";
+import {GitHub} from "@actions/github";
+import {resolve} from "path";
+import {exec} from "@actions/exec";
 import configFile from "./configFile";
 import foreman from "./foreman";
 
@@ -14,10 +14,12 @@ async function run(): Promise<void> {
     const allowExternalGithubOrgs: string = getInput(
       "allow-external-github-orgs"
     ).toLowerCase();
+    const artifactoryUrl = getInput("artifactory-url");
+    const artifactoryToken = getInput("artifactory-token");
 
     const octokit = new GitHub(githubToken);
     const releases = await foreman.getReleases(octokit);
-    const validReleases = foreman.filterValidReleases(releases)
+    const validReleases = foreman.filterValidReleases(releases);
     debug("Choosing release from GitHub API");
 
     const release = foreman.chooseRelease(versionReq, validReleases);
@@ -46,7 +48,14 @@ async function run(): Promise<void> {
       await exec("chmod +x .foreman-install/foreman");
     }
 
+    if ((artifactoryUrl == "") != (artifactoryToken == "")) {
+      throw new Error(
+        "Both artifactory-url and artifactory-token must be set or null"
+      );
+    }
+
     await foreman.authenticate(githubToken);
+    await foreman.addArtifactoryToken(artifactoryUrl, artifactoryToken);
     foreman.addBinDirToPath();
 
     if (workingDir !== undefined && workingDir !== null && workingDir !== "") {

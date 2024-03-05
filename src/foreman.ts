@@ -1,6 +1,6 @@
-import { addPath } from "@actions/core";
-import { exec } from "@actions/exec";
-import { GitHub } from "@actions/github";
+import {addPath} from "@actions/core";
+import {exec} from "@actions/exec";
+import {GitHub} from "@actions/github";
 import semver from "semver";
 import os from "os";
 
@@ -84,6 +84,10 @@ async function authenticate(token: string): Promise<void> {
   await exec("foreman", ["github-auth", token]);
 }
 
+async function addArtifactoryToken(url: string, token: string): Promise<void> {
+  await exec("foreman", ["artifactory-auth", url, token]);
+}
+
 function addBinDirToPath(): void {
   if (process.platform === "win32") {
     addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
@@ -105,7 +109,8 @@ export default {
   authenticate,
   addBinDirToPath,
   installTools,
-  filterValidReleases
+  filterValidReleases,
+  addArtifactoryToken
 };
 
-export type { GitHubRelease };
+export type {GitHubRelease};
