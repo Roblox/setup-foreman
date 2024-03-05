@@ -42217,10 +42217,13 @@ function run() {
             const versionReq = (0, core_1.getInput)("version");
             const githubToken = (0, core_1.getInput)("token");
             const workingDir = (0, core_1.getInput)("working-directory");
+            const githubApiUrl = (0, core_1.getInput)("github-api-url");
             const allowExternalGithubOrgs = (0, core_1.getInput)("allow-external-github-orgs").toLowerCase();
             const artifactoryUrl = (0, core_1.getInput)("artifactory-url");
             const artifactoryToken = (0, core_1.getInput)("artifactory-token");
-            const octokit = new github_1.GitHub(githubToken);
+            const octokit = new github_1.GitHub(githubToken, {
+                baseUrl: githubApiUrl
+            });
             const releases = yield foreman_1.default.getReleases(octokit);
             const validReleases = foreman_1.default.filterValidReleases(releases);
             (0, core_1.debug)("Choosing release from GitHub API");
