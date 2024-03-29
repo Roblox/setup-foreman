@@ -8,7 +8,7 @@ import semver from "semver";
 import configFile from "./configFile";
 import foreman from "./foreman";
 
-const MIN_ARTIFACTORY_FOREMAN_VERSION = "v1.6.1";
+const MIN_ARTIFACTORY_FOREMAN_VERSION = "v1.6.0";
 
 async function run(): Promise<void> {
   try {
@@ -60,7 +60,7 @@ async function run(): Promise<void> {
     if (artifactoryUrl != "" && artifactoryToken != "") { // both defined
       if (semver.compare(release.tag_name, MIN_ARTIFACTORY_FOREMAN_VERSION) == -1) {
         throw new Error(
-          "Artifactory support requires Foreman version 1.0.5 or later"
+          `Artifactory support requires Foreman version ${MIN_ARTIFACTORY_FOREMAN_VERSION} or later`
         );
       }
 

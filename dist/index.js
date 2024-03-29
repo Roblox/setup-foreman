@@ -42212,7 +42212,7 @@ const exec_1 = __nccwpck_require__(2423);
 const semver_1 = __importDefault(__nccwpck_require__(4056));
 const configFile_1 = __importDefault(__nccwpck_require__(3572));
 const foreman_1 = __importDefault(__nccwpck_require__(5847));
-const MIN_ARTIFACTORY_FOREMAN_VERSION = "v1.6.1";
+const MIN_ARTIFACTORY_FOREMAN_VERSION = "v1.6.0";
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -42248,7 +42248,7 @@ function run() {
             yield foreman_1.default.authenticate(githubToken);
             if (artifactoryUrl != "" && artifactoryToken != "") { // both defined
                 if (semver_1.default.compare(release.tag_name, MIN_ARTIFACTORY_FOREMAN_VERSION) == -1) {
-                    throw new Error("Artifactory support requires Foreman version 1.0.5 or later");
+                    throw new Error(`Artifactory support requires Foreman version ${MIN_ARTIFACTORY_FOREMAN_VERSION} or later`);
                 }
                 yield foreman_1.default.addArtifactoryToken(artifactoryUrl, artifactoryToken);
             }
