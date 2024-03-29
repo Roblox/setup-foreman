@@ -1,5 +1,5 @@
-import {parse} from "toml";
-import {readFile} from "fs";
+import { parse } from "toml";
+import { readFile } from "fs";
 import findUp from "find-up";
 interface foremanConfig {
   tools: {

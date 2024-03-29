@@ -84,6 +84,10 @@ async function authenticate(token: string): Promise<void> {
   await exec("foreman", ["github-auth", token]);
 }
 
+async function addArtifactoryToken(url: string, token: string): Promise<void> {
+  await exec("foreman", ["artifactory-auth", url, token]);
+}
+
 function addBinDirToPath(): void {
   if (process.platform === "win32") {
     addPath(`${process.env.USERPROFILE}\\.foreman\\bin`);
@@ -105,7 +109,8 @@ export default {
   authenticate,
   addBinDirToPath,
   installTools,
-  filterValidReleases
+  filterValidReleases,
+  addArtifactoryToken
 };
 
 export type { GitHubRelease };
