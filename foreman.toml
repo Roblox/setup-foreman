@@ -1,5 +1,5 @@
 # This file is used as a way to make sure that setup-foreman is functioning.
 
 [tools]
-rojo = { source = "Roblox/rojo", version = "0.6.0" }
+rojo = { source = "Roblox/rojo", version = "6.0.0" }
 selene = { source = "Kampfkarren/selene", version = "0.15.0" }
