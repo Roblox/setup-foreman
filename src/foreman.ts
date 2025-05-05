@@ -57,7 +57,7 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
       name.includes("win32");
   } else if (process.platform === "darwin") {
     if (arch === "x64") {
-      if (release.tag_name >= "v1.0.5") {
+      if (semver.gte(release.tag_name, "v1.0.5")) {
         platformMatcher = name => name.includes("macos-x86_64");
       } else {
         platformMatcher = name => name.includes("macos");
@@ -67,7 +67,7 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
     }
   } else if (process.platform === "linux") {
     if (arch === "x64") {
-      if (release.tag_name >= "v1.6.4") {
+      if (semver.gte(release.tag_name, "v1.6.4")) {
         platformMatcher = name => name.includes("linux-x86_64");
       } else {
         platformMatcher = name => name.includes("linux");
