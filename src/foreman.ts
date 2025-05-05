@@ -48,6 +48,7 @@ function chooseRelease(
 
 function chooseAsset(release: GitHubRelease): GitHubAsset | null {
   let platformMatcher: (name: string) => boolean;
+  const arch = os.arch();
 
   if (process.platform === "win32") {
     platformMatcher = name =>
@@ -55,7 +56,6 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
       name.includes("win64") ||
       name.includes("win32");
   } else if (process.platform === "darwin") {
-    const arch = os.arch();
     if (arch === "x64") {
       if (release.tag_name >= "v1.0.5") {
         platformMatcher = name => name.includes("macos-x86_64");
@@ -66,7 +66,15 @@ function chooseAsset(release: GitHubRelease): GitHubAsset | null {
       platformMatcher = name => name.includes("macos-arm64");
     }
   } else if (process.platform === "linux") {
-    platformMatcher = name => name.includes("linux");
+    if (arch === "x64") {
+      if (release.tag_name >= "v1.6.4") {
+        platformMatcher = name => name.includes("linux-x86_64");
+      } else {
+        platformMatcher = name => name.includes("linux");
+      }
+    } else {
+      platformMatcher = name => name.includes("linux-arm64");
+    }
   } else {
     throw new Error(`Unsupported platform "${process.platform}"`);
   }
