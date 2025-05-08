@@ -7,7 +7,7 @@ This action will install a release version of Foreman and run `foreman install` 
 Add a step to your workflow file:
 
 ```yaml
-- uses: Roblox/setup-foreman@v1
+- uses: Roblox/setup-foreman@v3
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -43,7 +43,7 @@ GitHub Cloud to install publicly hosted tools.
 As such, for any use of this action in GitHub Enterprise, `github-api-url`
 should be included like so:
 ```yaml
-- uses: Roblox/setup-foreman@v1
+- uses: Roblox/setup-foreman@v3
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
     github-api-url: "https://api.github.com"
