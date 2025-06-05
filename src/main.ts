@@ -19,6 +19,9 @@ async function run(): Promise<void> {
     const allowExternalGithubOrgs: string = getInput(
       "allow-external-github-orgs"
     ).toLowerCase();
+    const githubOrgsAllowList: string[] = getInput(
+      "github-orgs-allow-list"
+    ).split(",").map((org: string) => org.trim().toLowerCase()).filter((org) => org !== "");
     const artifactoryUrl = getInput("artifactory-url");
     const artifactoryToken = getInput("artifactory-token");
 
@@ -85,7 +88,7 @@ async function run(): Promise<void> {
           `Could not find repository owner setup-foreman is running in`
         );
       }
-      configFile.checkSameOrgInConfig(owner.toLowerCase());
+      configFile.checkSameOrgInConfig(owner.toLowerCase(), githubOrgsAllowList);
     }
 
     await foreman.installTools();
