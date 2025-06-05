@@ -14,7 +14,7 @@ test("checkSameOrgToolSpec same org", () => {
     tool3 = { source = "org1/tool3", version = "1.0.0" }\n
   `;
   let manifestContent = parse(config);
-  expect(configFile.checkSameOrgToolSpecs(manifestContent, "org1")).toEqual(
+  expect(configFile.checkSameOrgToolSpecs(manifestContent, "org1", [])).toEqual(
     true
   );
 });
@@ -27,9 +27,34 @@ test("checkSameOrgToolSpec different org", () => {
     tool3 = { source = "org1/tool3", version = "1.0.0" }\n
   `;
   let manifestContent = parse(config);
-  expect(configFile.checkSameOrgToolSpecs(manifestContent, "org1")).toEqual(
+  expect(configFile.checkSameOrgToolSpecs(manifestContent, "org1", [])).toEqual(
     false
   );
+});
+
+test("checkSameOrgToolSpec external org allowed with allowList", () => {
+  let config = `
+    [tools]\n
+    tool1 = { source = "org1/tool1", version = "1.0.0" }\n
+    tool2 = { source = "org2/tool2", version = "1.0.0" }\n
+    tool3 = { source = "org1/tool3", version = "1.0.0" }\n
+  `;
+  let manifestContent = parse(config);
+  expect(
+    configFile.checkSameOrgToolSpecs(manifestContent, "org1", ["org2"])
+  ).toEqual(true);
+});
+
+test("checkSameOrgToolSpec external org allowed case-insensitive", () => {
+  let config = `
+    [tools]\n
+    tool1 = { source = "org1/tool1", version = "1.0.0" }\n
+    tool2 = { source = "ORG2/tool2", version = "1.0.0" }\n
+  `;
+  let manifestContent = parse(config);
+  expect(
+    configFile.checkSameOrgToolSpecs(manifestContent, "org1", ["org2"])
+  ).toEqual(true);
 });
 
 test("filter valid releases", () => {
