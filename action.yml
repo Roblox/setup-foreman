@@ -17,6 +17,9 @@ inputs:
   allow-external-github-orgs:
     required: false
     description: 'Allow installing from external GitHub organizations'
+  github-orgs-allow-list:
+    required: false
+    description: 'Comma separated list of orgs that are allowed even if external orgs are not allowed'
   artifactory-url:
     required: false
     description: 'Artifactory URL to use for downloading Foreman tools'

@@ -18,7 +18,8 @@ const MANIFEST = "foreman.toml";
 
 function checkSameOrgToolSpecs(
   manifestContent: foremanConfig,
-  org: string
+  org: string,
+  allowList: string[]
 ): boolean {
   const tools = manifestContent.tools;
   if (tools == null) {
@@ -44,13 +45,13 @@ function checkSameOrgToolSpecs(
       );
     }
     if (tool_org.toLowerCase() != org) {
-      return false;
+      return allowList.includes(tool_org.toLowerCase())
     }
   }
   return true;
 }
 
-async function checkSameOrgInConfig(org: string): Promise<void> {
+async function checkSameOrgInConfig(org: string, allowList: string[]): Promise<void> {
   const manifestPath = await findUp(MANIFEST);
   if (manifestPath == undefined) {
     throw new Error("setup-foreman could not find Foreman config file");
@@ -63,7 +64,7 @@ async function checkSameOrgInConfig(org: string): Promise<void> {
       );
     }
     const manifestContent = parse(data);
-    const sameGithubOrgSource = checkSameOrgToolSpecs(manifestContent, org);
+    const sameGithubOrgSource = checkSameOrgToolSpecs(manifestContent, org, allowList);
     if (!sameGithubOrgSource) {
       throw new Error(
         `All GitHub orgs in Foreman config must match the org setup-foreman runs in: ${org}. To disable this check, set the \"allow-external-github-orgs\" option to true.`
