@@ -12,14 +12,14 @@ jobs:
     name: Test setup-foreman action
     strategy:
       matrix:
-        os: ["ubuntu-22.04", "windows-latest", "macos-latest"]
+        os: ["ubuntu-24.04", "windows-latest", "macos-latest"]
 
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: 24
 
     - run: npm install
     - run: npm run all
@@ -38,13 +38,13 @@ jobs:
     name: Test setup-foreman action with working-directory
     strategy:
       matrix:
-        os: ["ubuntu-22.04", "windows-latest", "macos-latest"]
+        os: ["ubuntu-24.04", "windows-latest", "macos-latest"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: 24
     - run: npm install
     - run: npm run all
     - run: npm run pack
@@ -62,13 +62,13 @@ jobs:
     name: Test allow-external-gitub-org false expect failure
     strategy:
       matrix:
-        os: ["ubuntu-22.04"]
+        os: ["ubuntu-24.04"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: 24
     - run: npm install
     - run: npm run all
     - run: npm run pack
@@ -94,13 +94,13 @@ jobs:
     name: Test allow-external-gitub-org false expect success
     strategy:
       matrix:
-        os: ["ubuntu-22.04"]
+        os: ["ubuntu-24.04"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: 24
     - run: npm install
     - run: npm run all
     - run: npm run pack

@@ -27,5 +27,5 @@ inputs:
     required: false
     description: 'Artifactory token to use for downloading Foreman tools'
 runs:
-  using: 'node16'
+  using: 'node24'
   main: 'dist/index.js'
